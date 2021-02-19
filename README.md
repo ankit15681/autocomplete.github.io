@@ -1,8 +1,8 @@
 # Project Run
-after importing the project to system or vscode.
-Change pwd to direct-api
-Then run the command npm install (will install necessary node modules)
-Then run the command npm start to run the project in the browser.
+1.after importing the project to system or vscode. \
+2.Change pwd to direct-api\
+3.Then run the command npm install (will install necessary node modules)\
+4.Then run the command npm start to run the project in the browser.\
 
 # Getting Started with Create React App
 
