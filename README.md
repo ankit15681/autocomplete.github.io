@@ -1,3 +1,9 @@
+# Project Run
+after importing the project to system or vscode.
+Change pwd to direct-api
+Then run the command npm install (will install necessary node modules)
+Then run the command npm start to run the project in the browser.
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
