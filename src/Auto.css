@@ -1,0 +1,65 @@
+/* Gradient */
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  font-family: "arial", sans-serif;
+  text-align: center;
+  background-color: #d6eaf3;
+}
+.wrapper {
+  width: 320px;
+  margin-top: 5%;
+  padding-bottom: 2%;
+  margin-right: auto;
+  margin-left: auto;
+  border-radius: 1em;
+  box-shadow: 0 0 20px #7ebdd9;
+  background-color: #fff;
+}
+.container,
+.form-content {
+  width: 70%;
+  margin-right: auto;
+  margin-left: auto;
+}
+.logo {
+  padding-top: 1em;
+}
+.form-content .form-field {
+  margin-bottom: 1.5em;
+  border: none;
+  border-bottom: 1px solid #d6eaf3;
+  color: #888;
+}
+.form-content .name,
+.form-content .email {
+  width: 90%;
+  border: none;
+  font-size: 16px;
+  text-align: center;
+  color: #888;
+}
+.form-content .name:focus,
+.form-content .email:focus {
+  outline: none;
+}
+
+.form-content .submit {
+  width: 100%;
+  margin: 1em 0;
+  padding: 1em;
+  border: none;
+  border-radius: 0.5em;
+  font-weight: bolder;
+  box-shadow: 0 0 1em #7ebdd9;
+  cursor: pointer;
+  background-image: linear-gradient(to right, #1e2cf0, #3e98e2);
+  color: #fff;
+  transition: box-shadow 0.5s;
+}
+.form-content .submit:hover {
+  box-shadow: none;
+}
