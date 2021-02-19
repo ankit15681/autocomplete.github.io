@@ -1,3 +1,6 @@
+# About Project
+Autocomplete api with AutoSuggest to populate select element using get request and Posting those selected options and other data to api. \
+live app link : https://autocomplete-apid-api.herokuapp.com/
 # Project Run
 1.after importing the project to system or vscode. \
 2.Change pwd to direct-api\
