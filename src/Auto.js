@@ -45,21 +45,43 @@ class Auto extends PureComponent{
             [event.target.name]: event.target.value
           });
     }
+    //form validation
+    checkInput(){
+        if(this.state.name === "")
+        {
+            document.getElementById("msg").innerHTML = "Please Enter Your Name!";
+            return true
+        }
+        if(this.state.email === "")
+        {
+            document.getElementById("msg").innerHTML = "Please Enter Your Email!";
+            return true
+        }
+        if(this.state.selectedInterests.length === 0)
+        {
+            document.getElementById("msg").innerHTML = "Please Enter Interests!";
+            return true
+        }
+        return false;
+
+    }
+
     //submits form data to server
-    submit = (event) => {
+    submit =async (event) => {
         event.preventDefault()
-        let result = this.state.selectedInterests.map(a => a.value).toString();
-        console.log({name:this.state.name, email:this.state.email,interests:result})
-            axios
-            .post("https://testpostapi1.p.rapidapi.com/testBatmanApi/name/register/?rapidapi-key=28728db04dmsh34d3f140dd059fap1c388ejsn7288577afcf7", {
-                name: this.state.name,
+        const emptyField = this.checkInput();
+        if(emptyField == true)
+        {return;}
+        let result = this.state.selectedInterests.map(a => a.value).toString();   
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name: this.state.name,
                 email: this.state.email,
-                interests: result
-            }) //logs server response to console
-            .then((res) => {
-                console.log('Successfully posted data', res);
-                
-            }) //shows success message to screen
+                interests: result })
+        };     
+           await fetch(`https://testpostapi1.p.rapidapi.com/testBatmanApi/name/register/?rapidapi-key=${process.env.REACT_APP_RAPIDAPI_KEY}`, requestOptions) 
+            //shows success message to screen
             .then(()=>{
                 document.getElementById("msg").innerHTML = "Registration Successful!";
             })//shows error to console
@@ -72,11 +94,11 @@ class Auto extends PureComponent{
           
       }
       //load options of select from api request
-    loadOptions= async  (inputText, callback) => {
-        const response = await fetch(`https://webit-keyword-search.p.rapidapi.com/autosuggest?rapidapi-key=28728db04dmsh34d3f140dd059fap1c388ejsn7288577afcf7&q=${inputText}&language=en`,{
+    loadOptions=  async(inputText, callback) => {
+        const response =  await fetch(`${process.env.REACT_APP_RAPIDAPI_HOST}/autosuggest?rapidapi-key=${process.env.REACT_APP_RAPIDAPI_KEY}&q=${inputText}&language=en`,{
             mode: 'cors'})
         const res =  await response.json();
-        console.log(res.data.results)
+        // console.log(res.data.results)
         callback(res.data.results.map(i=>({label: i, value:i})))
     }
 

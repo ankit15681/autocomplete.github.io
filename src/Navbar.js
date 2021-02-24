@@ -1,60 +1,178 @@
-import * as React from "react"
-import { AppBar, Toolbar, IconButton, List, ListItem, ListItemText, makeStyles, Container } from "@material-ui/core"
-import { Home } from "@material-ui/icons"
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  makeStyles,
+  Button,
+  IconButton,
+  Drawer,
+  Link,
+  MenuItem,
+} from "@material-ui/core";
+import MenuIcon from "@material-ui/icons/Menu";
+import React, { useState, useEffect } from "react";
 
-const useStyles = makeStyles({
-    navbarDisplayFlex: {
-        display: `flex`,
-        justifyContent: `space-between`
-      },
-    navDisplayFlex: {
-      display: `flex`,
-      justifyContent: `space-between`
+const headersData = [
+  {
+    label: "Listings",
+    href: "/#",
+  },
+  {
+    label: "Mentors",
+    href: "/#",
+  },
+  {
+    label: "My Account",
+    href: "/#",
+  },
+  {
+    label: "Log Out",
+    href: "/#",
+  },
+];
+
+const useStyles = makeStyles(() => ({
+  header: {
+    backgroundColor: "#400CCC",
+    paddingRight: "79px",
+    paddingLeft: "118px",
+    "@media (max-width: 900px)": {
+      paddingLeft: 0,
     },
-    linkText: {
-      textDecoration: `none`,
-      textTransform: `uppercase`,
-      color: `white`
-    }
+  },
+  logo: {
+    fontFamily: "Work Sans, sans-serif",
+    fontWeight: 600,
+    color: "#FFFEFE",
+    textAlign: "left",
+  },
+  menuButton: {
+    fontFamily: "Open Sans, sans-serif",
+    fontWeight: 700,
+    size: "18px",
+    marginLeft: "38px",
+  },
+  toolbar: {
+    display: "flex",
+    justifyContent: "space-between",
+  },
+  drawerContainer: {
+    padding: "20px 30px",
+  },
+}));
+
+export default function Header() {
+  const { header, logo, menuButton, toolbar, drawerContainer } = useStyles();
+
+  const [state, setState] = useState({
+    mobileView: false,
+    drawerOpen: false,
   });
 
-const navLinks = [
-    { title: `about us`, path: `/#` },
-    { title: `product`, path: `/#` },
-    { title: `blog`, path: `/#` },
-    { title: `contact`, path: `/#` },
-    { title: `faq`, path: `/#` },
-  ]
+  const { mobileView, drawerOpen } = state;
 
-  const Navbar = () => {
-      const classes = useStyles();
+  useEffect(() => {
+    const setResponsiveness = () => {
+      return window.innerWidth < 900
+        ? setState((prevState) => ({ ...prevState, mobileView: true }))
+        : setState((prevState) => ({ ...prevState, mobileView: false }));
+    };
+
+    setResponsiveness();
+
+    window.addEventListener("resize", () => setResponsiveness());
+  }, []);
+
+  const displayDesktop = () => {
     return (
-      <AppBar position="static" >
-        <Toolbar>
-        <Container className={classes.navbarDisplayFlex} maxWidth="lg" >
-        <IconButton edge="start" color="inherit" aria-label="home">
-          <Home fontSize="large" />
-        </IconButton>
-        <List
-        component="nav"
-        aria-labelledby="main navigation"
-        className={classes.navDisplayFlex}
+      <Toolbar className={toolbar}>
+        {femmecubatorLogo}
+        <div>{getMenuButtons()}</div>
+      </Toolbar>
+    );
+  };
+
+  const displayMobile = () => {
+    const handleDrawerOpen = () =>
+      setState((prevState) => ({ ...prevState, drawerOpen: true }));
+    const handleDrawerClose = () =>
+      setState((prevState) => ({ ...prevState, drawerOpen: false }));
+
+    return (
+      <Toolbar>
+        <IconButton
+          {...{
+            edge: "start",
+            color: "inherit",
+            "aria-label": "menu",
+            "aria-haspopup": "true",
+            onClick: handleDrawerOpen,
+          }}
         >
-        {navLinks.map(({ title, path }) => (
-            <a href={path} key={title} className={classes.linkText}>
-            <ListItem button >
-                <ListItemText primary={title} />
-            </ListItem>
-            </a>
-        ))}
-        </List>
-        </Container>
-        </Toolbar>
+          <MenuIcon />
+        </IconButton>
+
+        <Drawer
+          {...{
+            anchor: "left",
+            open: drawerOpen,
+            onClose: handleDrawerClose,
+          }}
+        >
+          <div className={drawerContainer}>{getDrawerChoices()}</div>
+        </Drawer>
+
+        <div>{femmecubatorLogo}</div>
+      </Toolbar>
+    );
+  };
+
+  const getDrawerChoices = () => {
+    return headersData.map(({ label, href }) => {
+      return (
+        <Link
+          {...{
+            to: href,
+            color: "inherit",
+            style: { textDecoration: "none" },
+            key: label,
+          }}
+        >
+          <MenuItem>{label}</MenuItem>
+      </Link>
+        
+      );
+    });
+  };
+
+  const femmecubatorLogo = (
+    <Typography variant="h6" component="h1" className={logo}>
+      Rapid API
+    </Typography>
+  );
+
+  const getMenuButtons = () => {
+    return headersData.map(({ label, href }) => {
+      return (
+        <Button
+          {...{
+            key: label,
+            color: "inherit",
+            to: href,
+            className: menuButton,
+          }}
+        >
+          {label}
+        </Button>
+      );
+    });
+  };
+
+  return (
+    <header>
+      <AppBar className={header}>
+        {mobileView ? displayMobile() : displayDesktop()}
       </AppBar>
-    )
-  }
-
-  export default Navbar;
-  
-
-  
+    </header>
+  );
+}
